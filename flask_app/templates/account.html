@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename = '/css/style.css') }}">
+    <script defer src="{{ url_for('static', filename = '/js/app.js') }}"></script>
+</head>
+
+<body>
+    <header
+        class="flex flex-wrap content-center sticky top-0 h-20 bg-white w-full  p-5 z-50 border-b-2 shadow-lg rounded-b-xl ">
+        <div class="flex basis-1/4">
+            <h2 class="text-2xl  font-bold">Sports<span class="text-indigo-600">Planner</span></h2>
+            <img src="" alt="">
+        </div>
+        <div class="basis-3/4 flex justify-end content-center gap-5">
+            <!-- <form action="/search" class="basis-1/2" id="searchForm" method="post">
+                <input type="text" placeholder="Search Berry" class="w-3/4 border-2 p-1" name="searchInput">
+                <button type="submit" class="border-2 p-1 rounded">Search</button>
+            </form> -->
+            <nav class="flex basis-1/2 gap-5 justify-center content-center">
+                <a href="#home" class="text-lg"><span
+                        class="hover:underline hover:underline-offset-8 decoration-indigo-500 decoration-4">Home</span></a>
+                
+
+                <a href="/log_out" class="text-lg"><span
+                        class="hover:underline hover:underline-offset-8 decoration-indigo-500 decoration-4 ">Log
+                        Out</span></a>
+            </nav>
+        </div>
+    </header>
+    <main class="flex min-h-screen overflow-hidden">
+        <div
+            class="flex justify-center basis-1/6 gap-5 min-h-screen bg-gradient-to-b from-indigo-200 to-indigo-500 flex-none">
+            <h2 class="text-white text-3xl font-bold mt-10">Welcome {{User}}</h2>
+            
+        </div>
+
+        <div class="flex flex-col flex-wrap content-center gap-5 basis-5/6  min-h-screen flex-none">
+            <h1 class="text-5xl font-bold text-center mt-10">My Events</h1>
+            <h2 class="text-xl text-indigo-500 font-semibold mt-10">Today</h2>
+            <table class="w-3/4 border-2 ">
+
+                <thead class="bg-indigo-500">
+                    <td class="p-2  text-center text-white font-semibold text-lg">Name</td>
+                    <td class="p-2  text-center text-white font-semibold text-lg">Location</td>
+                    <td class="p-2 text-center text-white font-semibold text-lg">Time</td>
+                    <td class="p-2 text-center text-white font-semibold text-lg">Creator</td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <h2 class="text-xl text-indigo-500 font-semibold">Future</h2>
+            <table class="w-3/4 border-2 "">
+
+                <thead class=" bg-indigo-500">
+                <td class="p-2  text-center text-white font-semibold text-lg">Name</td>
+                <td class="p-2  text-center text-white font-semibold text-lg">Location</td>
+                <td class="p-2 text-center text-white font-semibold text-lg">Time</td>
+                <td class="p-2 text-center text-white font-semibold text-lg">Creator</td>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                    </tr>
+                    <tr>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                        <td class="p-2  text-center">Sample</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+       
+    </main>
+</body>
+
+</html>
