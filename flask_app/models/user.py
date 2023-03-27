@@ -61,3 +61,20 @@ class User:
         query = "SELECT * FROM users WHERE users.email = %(email)s LIMIT 1;"
         results = connectToMySQL(cls.DB).query_db(query, data)
         return results
+    
+    @classmethod
+    def login_validation(cls, form):
+        is_valid = True
+        if not EMAIL_REGEX.match(form['email']):
+            is_valid = False
+            flash("invalid email/password", "login")
+        return is_valid
+    
+    @classmethod
+    def get_user(cls, user_id):
+        data = {
+            "user_id": user_id
+        }
+        query = "SELECT * FROM users WHERE users.id = %(user_id)s LIMIT 1;"
+        results = connectToMySQL(cls.DB).query_db(query, data)
+        return cls(results[0])
