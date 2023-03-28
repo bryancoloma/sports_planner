@@ -15,23 +15,27 @@
         <main class="flex flex-wrap flex-col  justify-center content-center gap-10 w-3/4 mx-auto min-h-full p-10">
             <img src="../images/undraw_game_day_ucx9.svg" alt="" class="w-1/3 h-1/3">
             <h1 class="text-5xl text-indigo-500 font-bold">Update Event</h1>
-            <form action="/update-event " class="flex flex-col gap-5">
+            <form action="/submit_edited_event/{{event.id}}"  method="POST" class="flex flex-col gap-5">
                 <label for="" class="border-b-2 border-indigo-500">
                     <span class="block text-lg font-semibold">Name</span>
-                    <input type="text" name="name" class="border-none outline-none w-full pl-3" placeholder="{{event.name}}">
+                    <input type="text" name="name" class="border-none outline-none w-full pl-3" value="{{event.name}}">
                 </label>
                
                 <label for="" class="border-b-2 border-indigo-500">
                     <span class="block text-lg font-semibold">Location</span>
-                    <input type="text" name="location" class="border-none outline-none w-full pl-3" placeholder="{{event.location}}">
+                    <input type="text" name="location" class="border-none outline-none w-full pl-3" value="{{event.location}}">
                 </label>
                
                 <label for="" class="border-b-2 border-indigo-500">
                     <span class="block text-lg font-semibold">Time</span>
-                    <input type="text" name="time" class="border-none outline-none w-full pl-3" placeholder="{{event.time}}">
+                    <input type="time" name="time" class="border-none outline-none w-full pl-3" value="{{event.time}}">
                 </label>
-               <button type="submit" class="w-1/2 text-white bg-gradient-to-r from-indigo-300 to bg-indigo-600 p-2 mx-auto rounded-lg hover:-translate-y-2 hover:-translate-x-2 shadow-lg shadow-indigo-800">Let's Go!</button>
-                
+
+                <label for="" class="border-b-2 border-indigo-500">
+                    <span class="block text-lg font-semibold">Time</span>
+                    <input type="date" name="date" class="border-none outline-none w-full pl-3" value="{{event.date}}">
+                </label>
+               <button type="submit" class="w-1/2 text-white bg-gradient-to-r from-indigo-300 to bg-indigo-600 p-2 mx-auto rounded-lg hover:-translate-y-2 hover:-translate-x-2 shadow-lg shadow-indigo-800">Save!</button>    
             </form>
         </main>
       
