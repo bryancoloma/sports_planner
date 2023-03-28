@@ -12,20 +12,25 @@ def main():
         return render_template("login.html")
     if session['user'] > 0:
         user_id = session['user']
+        print("found session")
         return redirect(f'/dashboard/{user_id}')
     else:
         return render_template("login.html")
 
 @app.route('/login', methods=['POST']) #login route, collects user data by email input and checks against database
 def login():
-    data = {"email" : request.form['email']}
-    user_in_db = User.getUserByEmail(data)
+    data = {"email" : request.form["email"]}
+    user_in_db = User.find_by_email(data)
+
     if not user_in_db: #redirects to login page if email not in db
         flash('Invalid Email or Password')
-        return redirect('/existingaccount')
+        print('Invalid Email ')
+        return redirect('/')
     if not bcrypt.check_password_hash(user_in_db.password, request.form['password']): #redirects to login page if password is wrong
         flash('Invalid Email or Password')
-        return redirect('/existingaccount')
+        print('Invalid Email Password')
+        return redirect('/')
+    print('valid')
     session['user'] = user_in_db.id #stores user id in session
     user_id = user_in_db.id #collects user id into variable to send through url
     return redirect(f'/dashboard/{user_id}')
@@ -47,20 +52,13 @@ def dashboard(id):
     allEvents = Event.get_all_by_user(id) #gets all events to display in dash
     return render_template('index.html', user = user, allEvents = allEvents, todaysEvents = todaysEvents)
 
+
 @app.route('/createaccount', methods=['POST']) #route for recieving form data and creating user
 def createAccount():
     print(request.form)
-    data = {
-        "first_name" : request.form['first_name'],
-        "last_name" : request.form['last_name'],
-        "email" : request.form['email'],
-        "password" : request.form['password'],
-        "confirm" : request.form['confirm']
-    } #set initial data to be validated
-
-    if not User.validate_user(request.form): #validate user otherwise redirect to registration page
-        return redirect('/register')
     pw_hash = bcrypt.generate_password_hash(request.form['password']) #hash password
+    if not User.register_validation(request.form): #validate user otherwise redirect to registration page
+        return redirect('/register')
     data = {
         "first_name" : request.form['first_name'],
         "last_name" : request.form['last_name'],
@@ -73,9 +71,9 @@ def createAccount():
 
 @app.route('/user/<int:id>')
 def userInfo(id):
-    user = User.getUser(id)
-    events = Event.getUserEvents(id) #might need more
-    return render_template('userInfo.html', user = user, events = events)
+    user = User.get_user(id)
+    events = Event.get_all_by_user(id) #might need more
+    return render_template('user_details.html', user = user, events = events)
 
 @app.route('/events')
 def welcome():
@@ -86,3 +84,8 @@ def welcome():
         "id":  session['user_id']
     }
     return render_template("index.html", loggedin_user= User.get_user_by_id(data), all_recipes = Event.get_events_with_creator())
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
