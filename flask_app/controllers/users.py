@@ -17,9 +17,6 @@ def main():
     else:
         return render_template("login.html")
         
-@app.route('/register')
-def registerAccount():
-    return render_template('register.html')
 
 @app.route('/login', methods=['POST']) #already have an account button that directs to login page
 def login():
@@ -39,21 +36,28 @@ def login():
     user_id = user_in_db.id #collects user id into variable to send through url
     return redirect(f'/dashboard/{user_id}')
 
+@app.route('/register')
+def registerAccount():
+    return render_template('register.html')
+
 @app.route('/existingaccount') #already have an account button that directs to login page
 def existingAccount():
     return render_template('loginform.html')
 
 @app.route('/createaccount', methods=['POST']) #route for recieving form data and creating user
-def createUser():
+def createAccount():
+    print(request.form)
+    pw_hash = bcrypt.generate_password_hash(request.form['password']) #hash password
+    
     if not User.register_validation(request.form): #validate user otherwise redirect to registration page
         return redirect('/register')
-    pw_hash = bcrypt.generate_password_hash(request.form['password']) #hash password
     data = {
         "first_name" : request.form['first_name'],
         "last_name" : request.form['last_name'],
         "email" : request.form['email'],
         "password" : pw_hash
     } #reset data to be stored in db
+
     user_id = User.register_user(data) #create user
     session['user'] = user_id #set session user id
     return redirect(f'/dashboard/{user_id}')
@@ -85,7 +89,7 @@ def user_details(id):
     events = Event.get_all_by_user(id)
     return render_template('user_details.html', user = user, events = events)
 
-@app.route('/log_out')
+@app.route('/logout')
 def logout():
     session.clear()
     return redirect('/')

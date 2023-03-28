@@ -6,6 +6,7 @@ from flask_app.models import event
 # bcrypt = Bcrypt(app)
 import re
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+TEXT_REGEX = re.compile(r'^[a-zA-Z]+$') 
 
 class User:
     DB = "sports_planner"
@@ -26,6 +27,7 @@ class User:
         return user_id
     
     # the following two methods are validation for register_user
+    
     @classmethod
     def register_validation(cls,form):
         is_valid = True
