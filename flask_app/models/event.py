@@ -154,3 +154,37 @@ class Event:
             # Append the event containing the associated User to your list of events
             all_events.append(one_event)
         return all_events
+    
+
+    @classmethod
+    def get_future_events_by_user(cls,user_id):
+        data = {"id": user_id}
+        query = "SELECT * FROM events JOIN users on users.id = events.user_id where user_id=%(id)s and events.date>=CURDATE();"
+        results = connectToMySQL('sports_planner').query_db(query,data)
+        print("These are the events")
+        print(results)
+        all_events = []
+        print("This is the  lenght")
+        print(len(results))
+        for row in results:
+        # Create a Event class instance from the information from each db row
+            one_event = cls(row)
+            # Prepare to make a User class instance, looking at the class in models/user.py
+            one_event_author_info = {
+                # Any fields that are used in BOTH tables will have their name changed, which depends on the order you put them in the JOIN query, use a print statement in your classmethod to show this.
+                "id": row['users.id'], 
+                "first_name": row['first_name'],
+                "last_name": row['last_name'],
+                "email": row['email'],
+                "password": row['password'],
+                "created_at": row['users.created_at'],
+                "updated_at": row['users.updated_at']
+            }
+
+            # Create the User class instance that's in the user.py model file
+            author = user.User(one_event_author_info)
+            # Associate the event class instance with the User class instance by filling in the empty creator attribute in event the class
+            one_event.creator = author
+            # Append the event containing the associated User to your list of events
+            all_events.append(one_event)
+        return all_events

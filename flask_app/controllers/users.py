@@ -28,7 +28,7 @@ def login():
         return redirect('/')
     if not bcrypt.check_password_hash(user_in_db.password, request.form['password']): #redirects to login page if password is wrong
         flash('Invalid Email or Password')
-        print('Invalid Email Password')
+        print('Invalid Password')
         return redirect('/')
     print('valid')
     session['user'] = user_in_db.id #stores user id in session
@@ -49,7 +49,7 @@ def dashboard(id):
         return redirect('/logout') #if not, logs out the user
     user = User.get_user(id) #gets user by id so the dashboard can access user data
     todaysEvents = Event.get_all_by_user_today(id) #gets todays events that user is attending
-    allEvents = Event.get_all_by_user(id) #gets all events to display in dash
+    allEvents = Event.get_future_events_by_user(id) #gets all events to display in dash
     return render_template('index.html', user = user, allEvents = allEvents, todaysEvents = todaysEvents)
 
 
@@ -74,16 +74,6 @@ def userInfo(id):
     user = User.get_user(id)
     events = Event.get_all_by_user(id) #might need more
     return render_template('user_details.html', user = user, events = events)
-
-@app.route('/events')
-def welcome():
-    if "user_id" not in session:
-        flash("User doesn't exists!")
-        return redirect('/logout')
-    data = {
-        "id":  session['user_id']
-    }
-    return render_template("index.html", loggedin_user= User.get_user_by_id(data), all_recipes = Event.get_events_with_creator())
 
 @app.route('/logout')
 def logout():
