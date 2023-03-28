@@ -57,6 +57,7 @@ def dashboard(id):
 def createAccount():
     print(request.form)
     pw_hash = bcrypt.generate_password_hash(request.form['password']) #hash password
+    
     if not User.register_validation(request.form): #validate user otherwise redirect to registration page
         return redirect('/register')
     data = {
@@ -65,6 +66,7 @@ def createAccount():
         "email" : request.form['email'],
         "password" : pw_hash
     } #reset data to be stored in db
+
     user_id = User.register_user(data) #create user
     session['user'] = user_id #set session user id
     return redirect(f'/dashboard/{user_id}')
