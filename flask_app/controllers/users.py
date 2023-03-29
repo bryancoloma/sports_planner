@@ -47,10 +47,11 @@ def existingAccount():
 @app.route('/createaccount', methods=['POST']) #route for recieving form data and creating user
 def createAccount():
     print(request.form)
-    pw_hash = bcrypt.generate_password_hash(request.form['password']) #hash password
+   
     
     if not User.register_validation(request.form): #validate user otherwise redirect to registration page
         return redirect('/register')
+    pw_hash = bcrypt.generate_password_hash(request.form['password']) #hash password
     data = {
         "first_name" : request.form['first_name'],
         "last_name" : request.form['last_name'],

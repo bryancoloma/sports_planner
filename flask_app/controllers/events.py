@@ -58,7 +58,7 @@ def submit_edited_event(event_id):
     print(request.form)
     if not Event.validate_event(request.form):
         print("validation didnt work")
-        return redirect('/edit_event/'+event_id)
+        return redirect(f'/edit_event/{event_id}')
     data = {
         "id": event_id,
         "name": request.form["name"],
