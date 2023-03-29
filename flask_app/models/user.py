@@ -22,12 +22,11 @@ class User:
 
     @classmethod
     def register_user(cls, data):
-        query ="INSERT INTO users (first_name, last_name, email, password) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s);"
-        user_id=  connectToMySQL(cls.DB).query_db(query, data)
+        query = "INSERT INTO users (first_name, last_name, email, password) VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s);"
+        user_id = connectToMySQL(cls.DB).query_db(query, data)
         return user_id
     
-    # the following two methods are validation for register_user
-    
+    # the following two methods are validation for register_user    
     @classmethod
     def register_validation(cls,form):
         is_valid = True
@@ -44,33 +43,34 @@ class User:
             print("passwords do not match")
             flash("passwords do not match", "register")
         # check min length of 8 for password
-        if len(form['password']) <= 7:
+        if len(form['password']) > 0 and len(form['password']) < 8:
             is_valid = False
             print("LENGTH")
             flash("password must be at least 8 characters", "register")
         # check email format
-        if not EMAIL_REGEX.match(form['email']):
+        if not EMAIL_REGEX.match(form['email']) and len(form['email']) > 0:
             is_valid = False
             print("email")
             flash("email is invalid", "register")
         # check if email has been used already
-        optional_user = cls.find_by_email(form['email'])
-        if not(optional_user == False):
-            is_valid = False
-            flash("email already used, please log in", "register")
+        emails = cls.get_emails()
+        for each_email in emails:
+            if each_email['email'] == form['email']:
+                flash('email already used, please login', 'register')
+                is_valid = False
         return is_valid
     
     @classmethod
-    def find_by_email(cls, data):
-        query = "SELECT * FROM users WHERE users.email = %(email)s;"
-        result = connectToMySQL(cls.DB).query_db(query, data)
-        print("result")
-        if not result:
-            return False
-        return cls(result[0])
+    def find_by_email(cls, email):
+        data = {
+            "email": email
+        }
+        query = "SELECT * FROM users WHERE users.email = %(email)s LIMIT 1;"
+        results = connectToMySQL(cls.DB).query_db(query, data)
+        return results
     
     @classmethod
-    def email_format_val(cls, form):
+    def email_validation(cls, form):
         is_valid = True
         if not EMAIL_REGEX.match(form['email']):
             is_valid = False
@@ -78,13 +78,20 @@ class User:
         return is_valid
     
     @classmethod
-    def login_validation(cls, form):
-        is_valid = True
-        if not EMAIL_REGEX.match(form['email']):
-            is_valid = False
-            flash("invalid email/password", "login")
-        return is_valid
+    def get_all(cls):
+        query = "SELECT * FROM users;"
+        users_from_db = connectToMySQL(cls.DB).query_db(query)
+        users = []
+        for each_row in users_from_db:
+            users.append(cls(each_row))
+        return users
     
+    @classmethod
+    def get_emails(cls):
+        query = "SELECT email FROM users;"
+        emails = connectToMySQL(cls.DB).query_db(query)
+        return emails
+
     @classmethod
     def get_user(cls, user_id):
         data = {
@@ -92,6 +99,17 @@ class User:
         }
         query = "SELECT * FROM users WHERE users.id = %(user_id)s LIMIT 1;"
         results = connectToMySQL(cls.DB).query_db(query, data)
+        return cls(results[0])
+
+    @classmethod
+    def get_by_email(cls, form):
+        data = {
+            "email": form['email']
+            }
+        query = "SELECT * FROM users WHERE email= %(email)s LIMIT 1;"
+        results = connectToMySQL(cls.DB).query_db(query,data)
+        if len(results) == 0:
+            return False
         return cls(results[0])
 
 """   @classmethod
