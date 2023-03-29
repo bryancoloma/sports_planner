@@ -10,9 +10,20 @@
     <script defer src="{{ url_for('static', filename = '/js/app.js') }}"></script>
 </head>
 <body>
-    <section class=" min-h-screen min-w-full">  
+    <section class=" min-h-screen min-w-full"> 
+        <div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class=" bg-indigo-500 text-black rounded-lg p-3 h-auto w-full mt-20">
+                    {% for message in messages %}
+                        <p class="text-center  text-lg font-semibold text-white">{{message}}</p>
+                    {% endfor %}     
+                    </div>
+                {% endif %}
+            {% endwith %}
+        </div> 
         <main class="flex flex-wrap flex-col  justify-center content-center gap-10 w-3/4 mx-auto min-h-full p-10">
-            <img src="../images/undraw_game_day_ucx9.svg" alt="" class="w-1/3 h-1/3">
+            <img src="../static/images/undraw_game_day_ucx9.svg" alt="" class="w-1/3 h-1/3">
             <h1 class="text-5xl text-indigo-500 font-bold">Create Event</h1>
             <form action="/submit_event" method="POST" class="flex flex-col gap-5">
                 <label for="" class="border-b-2 border-indigo-500">

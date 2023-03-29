@@ -17,10 +17,6 @@
             <img src="" alt="">
         </div>
         <div class="basis-3/4 flex justify-end content-center gap-5">
-            <!-- <form action="/search" class="basis-1/2" id="searchForm" method="post">
-                <input type="text" placeholder="Search Berry" class="w-3/4 border-2 p-1" name="searchInput">
-                <button type="submit" class="border-2 p-1 rounded">Search</button>
-            </form> -->
             <nav class="flex basis-1/2 gap-5 justify-center content-center">
                 <a href="/" class="text-lg"><span
                         class="hover:underline hover:underline-offset-8 decoration-indigo-500 decoration-4">Home</span></a>
@@ -42,8 +38,13 @@
                 <p class="text-2xl font-semibold">Date: {{event.date}}</p>
                 <p class="text-2xl font-semibold">Time: {{event.time}}</p>
             </div>
-            <a href="/edit_event/{{event.id}}"
-            class="p-2 bg-gradient-to-r from-indigo-300 to bg-indigo-600  rounded-xl text-white text-center hover:bg-white hover:text-black">Edit Event</a>
+            <div>
+                <a href="/edit_event/{{event.id}}"
+                class="p-2 bg-indigo-500 shadow-xl rounded-xl text-white text-center hover:bg-white hover:text-black">Edit Event</a>
+                <a href="/delete_event/{{event.id}}"
+                class="p-2 bg-indigo-500 shadow-lg rounded-xl text-white text-center hover:bg-red-500 hover:text-white">Delete Event</a>
+
+            </div>
         </div>
         <div class="flex flex-wrap justify-center content-center basis-2/3">
             <img src="../images/undraw_add_user_re_5oib.svg" alt="">
