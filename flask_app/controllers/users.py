@@ -21,7 +21,7 @@ def main():
 @app.route('/login', methods=['POST']) #already have an account button that directs to login page
 def login():
     data = {"email" : request.form["email"]}
-    user_in_db = User.find_by_email(data)
+    user_in_db = User.get_by_email(data)
 
     if not user_in_db: #redirects to login page if email not in db
         flash('Invalid Email or Password')
