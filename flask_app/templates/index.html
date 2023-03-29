@@ -25,14 +25,14 @@
                 <button type="submit" class="border-2 p-1 rounded">Search</button>
             </form> -->
             <nav class="flex basis-1/2 gap-5 justify-center content-center">
-                <a href="#home" class="text-lg"><span
+                <a href="/" class="text-lg"><span
                         class="hover:underline hover:underline-offset-8 decoration-indigo-500 decoration-4">Home</span></a>
-                <a href="#about" class="text-lg"><span
+                <a href="/" class="text-lg"><span
                         class="hover:underline hover:underline-offset-8 decoration-indigo-500 decoration-4 ">About</span></a>
-                <a href="/user_account" class="text-lg"><span
+                <a href="/user/{{user.id}}" class="text-lg"><span
                         class="hover:underline hover:underline-offset-8 decoration-indigo-500 decoration-4">{{user.first_name}}'s
                         Account</span></a>
-                <a href="/log_out" class="text-lg"><span
+                <a href="/logout" class="text-lg"><span
                         class="hover:underline hover:underline-offset-8 decoration-indigo-500 decoration-4 ">Log
                         Out</span></a>
             </nav>
@@ -52,15 +52,37 @@
                 <p class="text-slate-600 text-lg">Plan events days or weeks before.Find and build a community together.
                     Make and build new connections all through sports planner!
                 </p>
-                <a href="/events"
+                <a href="/create_event"
                     class="p-2 bg-gradient-to-r from-indigo-300 to bg-indigo-600 w-1/4 rounded-xl text-white text-center hover:bg-white hover:text-black">
-                    Find an Event </a>
+                    Create an Event </a>
             </div>
         </div>
         <div class="flex flex-wrap justify-center content-center basis-1/2">
-            <img src="../images/undraw_schedule_re_2vro.svg" alt="" class="w-1/2 h-1/2">
+            <img src="{{ url_for('static', filename = 'images/undraw_male_avatar_g98d.svg') }}" alt="" class="w-1/2 h-1/2">
         </div>
     </section>
+
+    <section class="flex flex-wrap content-center min-h-screen">
+        <div class="flex flex-col gap-5 w-4/6 mx-auto">
+            <div class=" pl-5 w-full">
+                <p class="text-indigo-500 text-xl">Events</p>
+                <h2 class="font-light text-3xl">Today's events</h2>
+            </div>
+            <div class="flex w-full overflow-x-scroll gap-2 flex-none p-5">
+                {% for event in todaysEvents %}
+                <div
+                    class="flex flex-wrap flex-col justify-center content-center basis-1/3 bg-slate-300/50 p-5 flex-none gap-3 hover:bg-indigo-500 hover:text-white transition-colors">
+                    <img src="{{ url_for('static', filename = 'images/undraw_male_avatar_g98d.svg') }}" alt="" class="w-1/2 h-1/2">
+                    <p class="text-xl font-semibold text-center">{{event.name}}</p>
+                    <p class="text-xl font-semibold text-center">{{event.location}} {{event.time}} {{event.date}}</p>
+                    <a href="/view_event/{{event.id}}"
+                        class="p-2 bg-gradient-to-r from-indigo-300 to bg-indigo-600  rounded-xl text-white text-center hover:bg-white hover:text-black">Event
+                        Details</a>
+                </div>
+                {% endfor %}
+            </div>
+    </section>
+
     <section class="flex flex-wrap content-center min-h-screen">
         <div class="flex flex-col gap-5 w-4/6 mx-auto">
             <div class=" pl-5 w-full">
@@ -68,45 +90,20 @@
                 <h2 class="font-light text-3xl">Upcoming events</h2>
             </div>
             <div class="flex w-full overflow-x-scroll gap-2 flex-none p-5">
+                {% for event in allEvents %}
                 <div
                     class="flex flex-wrap flex-col justify-center content-center basis-1/3 bg-slate-300/50 p-5 flex-none gap-3 hover:bg-indigo-500 hover:text-white transition-colors">
-                    <img src="../images/undraw_collaboration_re_vyau.svg" alt="" class="w-1/2 h-1/2">
-                    <p class="text-xl font-semibold text-center">Sports Event</p>
-                    <a href=""
+                    <img src="{{ url_for('static', filename = 'images/undraw_schedule_re_2vro.svg') }}" alt="" class="w-1/2 h-1/2">
+                    <p class="text-xl font-semibold text-center">{{event.name}}</p>
+                    <p class="text-xl font-semibold text-center">{{event.location}} {{event.time}} {{event.date}}</p>
+                    <a href="/view_event/{{event.id}}"
                         class="p-2 bg-gradient-to-r from-indigo-300 to bg-indigo-600  rounded-xl text-white text-center hover:bg-white hover:text-black">Event
                         Details</a>
                 </div>
-                <div
-                    class="flex flex-wrap flex-col justify-center content-center basis-1/3 bg-slate-300/50 p-5 flex-none gap-3 hover:bg-indigo-500 hover:text-white transition-colors">
-                    <img src="../images/undraw_collaboration_re_vyau.svg" alt="" class="w-1/2 h-1/2">
-                    <p class="text-xl font-semibold text-center">Sports Event</p>
-                    <a href=""
-                        class="p-2 bg-gradient-to-r from-indigo-300 to bg-indigo-600  rounded-xl text-white text-center hover:bg-white hover:text-black">Event
-                        Details</a>
-                </div>
-
-                <div
-                    class="flex flex-wrap flex-col justify-center content-center basis-1/3 bg-slate-300/50 p-5 flex-none gap-3 hover:bg-indigo-500 hover:text-white transition-colors">
-                    <img src="../images/undraw_collaboration_re_vyau.svg" alt="" class="w-1/2 h-1/2">
-                    <p class="text-xl font-semibold text-center">Sports Event</p>
-                    <a href=""
-                        class="p-2 bg-gradient-to-r from-indigo-300 to bg-indigo-600  rounded-xl text-white text-center hover:bg-white hover:text-black">Event
-                        Details</a>
-                </div>
-
-                <div
-                    class="flex flex-wrap flex-col justify-center content-center basis-1/3 bg-slate-300/50 p-5 flex-none gap-3 hover:bg-indigo-500 hover:text-white transition-colors">
-                    <img src="../images/undraw_collaboration_re_vyau.svg" alt="" class="w-1/2 h-1/2">
-                    <p class="text-xl font-semibold text-center">Sports Event</p>
-                    <a href=""
-                        class="p-2 bg-gradient-to-r from-indigo-300 to bg-indigo-600  rounded-xl text-white text-center hover:bg-white hover:text-black">Event
-                        Details</a>
-                </div>
-
-
-
+                {% endfor %}
             </div>
     </section>
+
     <section class="min-h-screen">
         <div class="flex flex-col gap-5 w-4/6 mx-auto h-full">
             <div class="basis-1/2 mt-20 pl-5 w-full">
@@ -117,37 +114,33 @@
             <div class=" flex basis-1/2 flex-wrap justify-between gap-5 ">
                 <div class="flex justify-between gap-5 w-full">
                     <div class="flex flex-col content-center gap-2">
-                        <img src="../images/undraw_male_avatar_g98d.svg" alt="" class="w-44  h-44">
+                        <img src="{{ url_for('static', filename = 'images/undraw_male_avatar_g98d.svg') }}" alt="" class="w-44  h-44">
                         <p class="text-xl font-semibold text-center">Team Member </p>
                     </div>
                     <div class="flex flex-col content-center gap-2">
-                        <img src="../images/undraw_male_avatar_g98d.svg" alt="" class="w-44  h-44">
-                        <p class="text-xl font-semibold text-center">Team Member </p>
-                    </div>
-    
-                    <div class="flex flex-col content-center gap-2">
-                        <img src="../images/undraw_male_avatar_g98d.svg" alt="" class="w-44  h-44">
+                        <img src="{{ url_for('static', filename = 'images/undraw_male_avatar_g98d.svg') }}" alt="" class="w-44  h-44">
                         <p class="text-xl font-semibold text-center">Team Member </p>
                     </div>
     
                     <div class="flex flex-col content-center gap-2">
-                        <img src="../images/undraw_male_avatar_g98d.svg" alt="" class="w-44  h-44">
+                        <img src="{{ url_for('static', filename = 'images/undraw_male_avatar_g98d.svg') }}" alt="" class="w-44  h-44">
                         <p class="text-xl font-semibold text-center">Team Member </p>
                     </div>
     
                     <div class="flex flex-col content-center gap-2">
-                        <img src="../images/undraw_female_avatar_efig.svg" alt="" class="w-44  h-44">
+                        <img src="{{ url_for('static', filename = 'images/undraw_male_avatar_g98d.svg') }}" alt="" class="w-44  h-44">
+                        <p class="text-xl font-semibold text-center">Team Member </p>
+                    </div>
+    
+                    <div class="flex flex-col content-center gap-2">
+                        <img src="{{ url_for('static', filename = 'images/undraw_male_avatar_g98d.svg') }}" alt="" class="w-44  h-44">
                         <p class="text-xl font-semibold text-center">Team Member </p>
                     </div>
 
                 </div>
                 <div class="flex justify-center min-h-full min-w-full">
-                    <img src="../images/undraw_meet_the_team_re_4h08.svg" alt="" class="w-full">
+                    <img src="{{ url_for('static', filename = 'images/undraw_meet_the_team_re_4h08.svg') }}" alt="" class="w-full">
                 </div>
-
-                
-
-
             </div>
 
         </div>
