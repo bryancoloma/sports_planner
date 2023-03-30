@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename = '/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = '/css/login.css') }}">
     <script defer src="{{ url_for('static', filename = '/js/app.js') }}"></script>
 </head>
 <body>
-    <section class="min-h-screen flex min-w-screen">
-        <div class="flex flex-col flex-wrap justify-center content-center p-5 basis-1/4 gap-10">
+    <section class="min-h-screen flex min-w-screen" id="login_container">
+        <div class="flex flex-col flex-wrap justify-center content-center p-5 basis-1/4 gap-10" id="form_container">
             <div>
                 {% with messages = get_flashed_messages() %}
                     {% if messages %}
@@ -37,7 +37,7 @@
                 <a href="/register" class="text-indigo-500 hover:underline">Don't have an account? Register here</a>
             </form>
         </div>
-        <div class="flex flex-wrap flex-col justify-center content-center basis-3/4  gap-10">
+        <div class="flex flex-wrap flex-col justify-center content-center basis-3/4  gap-10" id="image_container">
             <h2 class="text-7xl font-bold text-indigo-500">Go Join An Event!</h2>
             <img src="../static/images/undraw_mobile_login_re_9ntv (1).svg" alt="">
         </div>
