@@ -1,0 +1,47 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+@media (max-width: 768px){
+    #registration_container{
+        flex-direction: column;
+    }
+    #image_container{
+        display: none;
+    }
+    h2 {
+        font-size:2rem;
+    }
+}
+
+
+@media (min-width: 769px){
+    #form_container{
+        flex-basis: 50%;
+    }
+    #image_container{
+        flex-basis: 50%;
+    }
+    h2 {
+        font-size: 2rem !important;
+    }
+    #image_container{
+        display: flex;
+    }
+}
+@media (min-width: 1200px){
+    #form_container{
+        flex-basis: 25%;
+    }
+    #image_container{
+        flex-basis: 75%;
+    }
+    h2 {
+        font-size: 4.5rem !important;
+    }
+
+}
