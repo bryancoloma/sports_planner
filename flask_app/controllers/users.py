@@ -20,18 +20,19 @@ def main():
 
 @app.route('/login', methods=['POST']) #already have an account button that directs to login page
 def login():
-    data = {"email" : request.form["email"]}
-    user_in_db = User.get_by_email(data)
-
-    if not user_in_db: #redirects to login page if email not in db
-        flash('Invalid Email or Password')
-        print('Invalid Email ')
+    # data = {"email" : request.form["email"]}
+    if not (User.login_validation(request.form)):
         return redirect('/')
-    if not bcrypt.check_password_hash(user_in_db.password, request.form['password']): #redirects to login page if password is wrong
-        flash('Invalid Email or Password')
-        print('Invalid Password')
-        return redirect('/')
-    print('valid')
+    # if not user_in_db: #redirects to login page if email not in db
+    #     flash('Invalid Email or Password')
+    #     print('Invalid Email ')
+    #     return redirect('/')
+    # if not bcrypt.check_password_hash(user_in_db.password, request.form['password']): #redirects to login page if password is wrong
+    #     flash('Invalid Email or Password')
+    #     print('Invalid Password')
+    #     return redirect('/')
+    # print('valid')
+    user_in_db = User.get_by_email(request.form['email'])
     session['user'] = user_in_db.id #stores user id in session
     user_id = user_in_db.id #collects user id into variable to send through url
     return redirect(f'/dashboard/{user_id}')
@@ -47,7 +48,7 @@ def existingAccount():
 @app.route('/createaccount', methods=['POST']) #route for recieving form data and creating user
 def createAccount():
     print(request.form)
-   
+    
     
     if not User.register_validation(request.form): #validate user otherwise redirect to registration page
         return redirect('/register')
