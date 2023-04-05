@@ -65,25 +65,6 @@ class User:
         return all_emails
 
     @classmethod
-    def find_by_email(cls, email):
-        data = {
-            "email": email
-        }
-        query = "SELECT * FROM users WHERE users.email = %(email)s LIMIT 1;"
-        results = connectToMySQL(cls.DB).query_db(query, data)
-        return results
-    
-    @classmethod
-    def get_all(cls):
-        query = "SELECT * FROM users;"
-        users_from_db = connectToMySQL(cls.DB).query_db(query)
-        users = []
-        for each_row in users_from_db:
-            users.append(cls(each_row))
-        return users
-
-    # change to get_by_id
-    @classmethod
     def get_user(cls, user_id):
         data = {
             "user_id": user_id
