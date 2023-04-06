@@ -4,6 +4,8 @@ from flask_app import app
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 from flask import flash
+import datetime
+today = datetime.date.today()
 import re
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 TEXT_REGEX = re.compile(r'^[a-zA-Z]+$')
@@ -19,6 +21,8 @@ class User:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.events = []
+        self.events_today = []
+        self.future_events = []
 
     @classmethod
     def register_user(cls, data):
@@ -27,7 +31,7 @@ class User:
         return user_id
     
     @classmethod
-    def register_validation(cls,form):
+    def register_validation(cls, form):
         is_valid = True
         # check if email has been used already
         all_emails = cls.get_emails()
@@ -106,20 +110,19 @@ class User:
             return False
         return cls(results[0])
     
-    @staticmethod
-    def email_validation(email):
-        is_valid = True
-        if not EMAIL_REGEX.match(email):
-            is_valid = False
-        return is_valid
-    
-"""   @classmethod
+    @classmethod
     def get_user_with_events(cls, user_id):
         data = {
             "user_id": user_id
         }
-        query = "SELECT * FROM users LEFT JOIN events ON events.user_id = users.id WHERE users.id = %(user_id)s"
+        query = """SELECT * FROM users
+                LEFT JOIN events ON events.user_id = users.id
+                LEFT JOIN players ON players.event_id = events.id
+                WHERE events.date >= CURDATE() AND users.id = %(user_id)s OR players.user_id = %(user_id)s
+                ORDER BY date ASC LIMIT 10;"""
         results = connectToMySQL(cls.DB).query_db(query, data)
+        if len(results) == 0:
+            return cls.get_user(user_id)
         user = cls(results[0])
         for row in results:
             event_info = {
@@ -132,5 +135,16 @@ class User:
                 "updated_at": row['events.updated_at']
             }
             one_event = event.Event(event_info)
-            user.events.append(one_event)
-        return user"""
+            if today.strftime('%Y-%m-%d') == str(one_event.date):
+                user.events_today.append(one_event)
+            # elif today.strftime('%Y-%m-%d') < str(one_event.date):
+            else:  
+                user.future_events.append(one_event)
+        return user
+
+    @staticmethod
+    def email_validation(email):
+        is_valid = True
+        if not EMAIL_REGEX.match(email):
+            is_valid = False
+        return is_valid

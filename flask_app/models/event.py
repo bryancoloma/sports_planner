@@ -197,7 +197,7 @@ class Event:
         query = """SELECT * FROM events
                 LEFT JOIN players on players.event_id = events.id
                 WHERE events.user_id != %(user_id)s OR players.user_id != %(user_id)s
-                ORDER BY date ASC;"""
+                ORDER BY date ASC LIMIT 10;"""
         results = connectToMySQL('sports_planner').query_db(query, data)
         events = []
         for row in results:
