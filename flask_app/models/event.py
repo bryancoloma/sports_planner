@@ -188,3 +188,19 @@ class Event:
             # Append the event containing the associated User to your list of events
             all_events.append(one_event)
         return all_events
+    
+    @classmethod
+    def get_events_user_not_in(cls, user_id):
+        data = {
+            "user_id": user_id
+        }
+        query = """SELECT * FROM events
+                LEFT JOIN players on players.event_id = events.id
+                WHERE events.user_id != %(user_id)s OR players.user_id != %(user_id)s
+                ORDER BY date ASC LIMIT 10;"""
+        results = connectToMySQL('sports_planner').query_db(query, data)
+        events = []
+        for row in results:
+            one_event = cls(row)
+            events.append(one_event)
+        return events
