@@ -70,3 +70,11 @@ def submit_edited_event(event_id):
     # Call the save @classmethod on User
     Event.edit_event(data)
     return redirect('/')
+
+@app.route('/find_events')
+def render_events():
+    if 'user' not in session:
+        return redirect('/')
+    all_events = Event.get_events_user_not_in(session['user'])
+    logged_user = User.get_user(session['user'])
+    return render_template('find_events.html', events = all_events, user = logged_user)
