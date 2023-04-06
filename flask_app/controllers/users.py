@@ -13,7 +13,7 @@ def main():
     if session['user'] > 0:
         user_id = session['user']
         print("found session")
-        return redirect(f'/dashboard/{user_id}')
+        return redirect('/dashboard')
     else:
         return render_template("login.html")
         
@@ -35,7 +35,7 @@ def login():
     user_in_db = User.get_by_email(request.form['email'])
     session['user'] = user_in_db.id #stores user id in session
     user_id = user_in_db.id #collects user id into variable to send through url
-    return redirect(f'/dashboard/{user_id}')
+    return redirect('/dashboard')
 
 @app.route('/register')
 def registerAccount():
@@ -62,17 +62,24 @@ def createAccount():
 
     user_id = User.register_user(data) #create user
     session['user'] = user_id #set session user id
-    return redirect(f'/dashboard/{user_id}')
+    return redirect('/dashboard')
 
 
-@app.route('/dashboard/<int:id>') #when user logs in, display dashboard
-def dashboard(id):
-    if session['user'] != id: #checks url to see if the user logged in is the same as the account being accesses
-        return redirect('/logout') #if not, logs out the user
-    user = User.get_user(id) #gets user by id so the dashboard can access user data
-    todaysEvents = Event.get_all_by_user_today(id) #gets todays events that user is attending
-    allEvents = Event.get_future_events_by_user(id) #gets all events to display in dash
-    return render_template('index.html', user = user, allEvents = allEvents, todaysEvents = todaysEvents)
+# @app.route('/dashboard/<int:id>') #when user logs in, display dashboard
+# def dashboard(id):
+#     if session['user'] != id: #checks url to see if the user logged in is the same as the account being accesses
+#         return redirect('/logout') #if not, logs out the user
+#     user = User.get_user(id) #gets user by id so the dashboard can access user data
+#     todaysEvents = Event.get_all_by_user_today(id) #gets todays events that user is attending
+#     allEvents = Event.get_future_events_by_user(id) #gets all events to display in dash
+#     return render_template('index.html', user = user, allEvents = allEvents, todaysEvents = todaysEvents)
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user' not in session:
+        return redirect('/')
+    logged_user = User.get_user_with_events(session['user'])
+    return render_template('index.html', user = logged_user)
 
 
 
