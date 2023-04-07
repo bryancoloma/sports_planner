@@ -78,3 +78,11 @@ def render_events():
     all_events = Event.get_events_user_not_in(session['user'])
     logged_user = User.get_user(session['user'])
     return render_template('find_events.html', events = all_events, user = logged_user)
+
+@app.route('/event/<int:event_id>')
+def render_event_details(event_id):
+    if 'user' not in session:
+        return redirect('/login')
+    logged_user = User.get_user(session['user'])
+    the_event = Event.get_event_with_details(event_id)
+    return render_template('show_event.html', user = logged_user, event = the_event)
