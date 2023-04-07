@@ -13,6 +13,7 @@ class Event:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.creator = None
+        self.players = []
         self.messages = []
 
     @staticmethod
@@ -204,3 +205,39 @@ class Event:
             one_event = cls(row)
             events.append(one_event)
         return events
+    
+    @classmethod
+    def get_event_with_details(cls, event_id):
+        data = {
+            "event_id": event_id
+        }
+        query = """SELECT * FROM events
+                LEFT JOIN users AS creator ON creator.id = events.user_id
+                LEFT JOIN players ON players.event_id = events.id
+                LEFT JOIN users ON users.id = players.user_id
+                WHERE events.id = 1;"""
+        results = connectToMySQL('sports_planner').query_db(query, data)
+        event = cls(results[0])
+        creater_info = {
+            "id": results[0]['creator.id'],
+            "first_name": results[0]['first_name'],
+            "last_name": results[0]['last_name'],
+            "email": results[0]['email'],
+            "password": results[0]['password'],
+            "created_at": results[0]['creator.created_at'],
+            "updated_at": results[0]['creator.updated_at']
+        }
+        event.creator = user.User(creater_info)
+        for row in results:
+            player_info = {
+                "id": row['users.id'],
+                "first_name": row['users.first_name'],
+                "last_name": row['users.last_name'],
+                "email": row['users.email'],
+                "password": row['users.password'],
+                "created_at": row['users.created_at'],
+                "updated_at": row['users.updated_at']
+            }
+            one_player = user.User(player_info)
+            event.players.append(one_player)
+        return event
